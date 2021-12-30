@@ -10,7 +10,8 @@ import java.util.concurrent.ExecutionException;
 public class DeadLock {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-
+        new Thread(new Exchange(0), "edmonds").start();
+        new Thread(new Exchange(1), "aruis").start();
     }
 }
 
@@ -24,33 +25,47 @@ class Bear {
 
 
 class Exchange implements Runnable {
-    Fish fish = new Fish();
-    Bear bear = new Bear();
+    static Fish fish = new Fish();
+    static Bear bear = new Bear();
 
     private int type;
 
-    private String name;
-
-    public Exchange(int type, String name) {
+    public Exchange(int type) {
         this.type = type;
-        this.name = name;
     }
 
     @Override
     public void run() {
+        //死锁
+//        if (type == 0) {
+//            synchronized (fish) {
+//                System.out.println(Thread.currentThread().getName() + "拿到fish锁");
+//                synchronized (bear) {
+//                    System.out.println(Thread.currentThread().getName() + "拿到bear锁");
+//                }
+//            }
+//        } else {
+//            synchronized (bear) {
+//                System.out.println(Thread.currentThread().getName() + "拿到bear锁");
+//                synchronized (fish) {
+//                    System.out.println(Thread.currentThread().getName() + "拿到fish锁");
+//                }
+//            }
+//        }
+
         if (type == 0) {
             synchronized (fish) {
                 System.out.println(Thread.currentThread().getName() + "拿到fish锁");
-                synchronized (bear) {
-                    System.out.println(Thread.currentThread().getName() + "拿到bear锁");
-                }
+            }
+            synchronized (bear) {
+                System.out.println(Thread.currentThread().getName() + "拿到bear锁");
             }
         } else {
             synchronized (bear) {
                 System.out.println(Thread.currentThread().getName() + "拿到bear锁");
-                synchronized (fish) {
-                    System.out.println(Thread.currentThread().getName() + "拿到fish锁");
-                }
+            }
+            synchronized (fish) {
+                System.out.println(Thread.currentThread().getName() + "拿到fish锁");
             }
         }
     }
