@@ -13,4 +13,5 @@
 * 实现Callable和FutureTask接口
 * 通过线程池创建
 
+
 [![](https://data.jsdelivr.com/v1/package/gh/edmonds4553/thread/badge?style=rounded)](https://www.jsdelivr.com/package/gh/edmonds4553/thread)
